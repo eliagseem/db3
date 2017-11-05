@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 065790a13af85f1448dba92e111f150c
+timeCreated: 1490195118
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Rondo MN
+  fontNames:
+  - Rondo MN
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
