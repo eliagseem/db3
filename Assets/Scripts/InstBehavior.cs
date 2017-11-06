@@ -1,68 +1,62 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class InstBehavior : MonoBehaviour {
 
     [SerializeField] GameObject prefab;
+    [SerializeField] GameObject topPlane;
+    [SerializeField] GameObject bottomPlane;
+    [SerializeField] Light deskLight;
     [SerializeField] [Range(1f, 200f)] float drawDistance = 50f;
+    [SerializeField] Light spotlight;
 
     GameObject drawObject;
     bool drawing = false;
     Vector3 mouseStartingPosition;
-
+    bool cubeClicked = false;
     Camera cam;
 
     void Start()
     {
-        // load our camera
         cam = GetComponent<Camera>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // check if we want to start, end, or continue drawing
+        deskLight.transform.Rotate(new Vector3(15, 30, 45) * Time.deltaTime);
+
         if (Input.GetMouseButtonDown(0))
         {
-            startDraw();
+            drawObject = prefab as GameObject;
+            mouseStartingPosition = Input.mousePosition;
+            Ray ray = cam.ScreenPointToRay(mouseStartingPosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                if (hit.transform.name == "frontPlane")
+                {
+                    drawObject.GetComponent<Rigidbody>().AddForce(new Vector3(00, 500, 0));
+                }
+                else if (hit.transform.name == "Cube")
+                {
+                    foreach (Collider c in topPlane.GetComponents<Collider>())
+                    {
+                        c.enabled = false;
+                    }
+
+                    cubeClicked = true;
+                }
+            }
         }
-        else if (Input.GetMouseButtonUp(0))
+
+        if (cubeClicked)
         {
-            endDraw();
+
+            spotlight.color = Color.white;
+            spotlight.intensity = 33f;
+            spotlight.range = 12;
+
+            deskLight.color = Color.blue;
         }
-        else if (drawing)
-        {
-            whileDrawing();
-        }
-    }
-
-    void startDraw()
-    {
-        // create a new instance
-        drawObject = prefab as GameObject;
-
-        // save our draw starting point
-        mouseStartingPosition = Input.mousePosition;
-
-        // put the new instance where we pointed to with a set distance (or collision)
-        Ray ray = cam.ScreenPointToRay(mouseStartingPosition);
-        //drawObject.transform.position = drawObject.transform.position + ray.GetPoint(drawDistance);
-
-        // allow the Update to call whileDrawing()
-        drawing = true;
-    }
-
-    void endDraw()
-    {
-        // forbid the Update do call whileDrawing()
-        drawing = false;
-    }
-
-    void whileDrawing()
-    {
-        // manipulate the instance in whatever way you like
-        float mouseDistance = Vector3.Distance(mouseStartingPosition, Input.mousePosition);
-        drawObject.transform.localScale = new Vector3(mouseDistance / 100, mouseDistance/100, mouseDistance / 100);
     }
 }
