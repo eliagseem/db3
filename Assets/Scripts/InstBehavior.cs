@@ -64,12 +64,12 @@ public class InstBehavior : MonoBehaviour {
         if (cubeClicked)
         {
 
-            spotlight.color = Color.white;
+            spotlight.color = Color.red;
             spotlight.intensity = 10f;
             spotlight.range = 12;
 
-            backLight.color = Color.cyan;
-            deskLight.color = Color.blue;
+            backLight.color = Color.red;
+            deskLight.color = Color.red;
         }
     }
 }
